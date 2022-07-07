@@ -1,5 +1,5 @@
 # openai-discord-bot
-Discord bot for generating greentexts from user prompts
+Discord bot for calling the openai api to generate text from user prompts
 
 Run with the following environment variables
 - DISCORD_BOT_KEY
