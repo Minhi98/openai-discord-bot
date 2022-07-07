@@ -1,4 +1,4 @@
-# gpt-greentext-bot
+# openai-discord-bot
 Discord bot for generating greentexts from user prompts
 
 Run with the following environment variables
