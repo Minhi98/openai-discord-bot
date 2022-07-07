@@ -7,8 +7,13 @@ discord_bot = os.getenv("DISCORD_BOT_KEY")
 
 client = discord.Client()
 
+generation_commands = {
+    '.greentext': "Write a 4chan greentext about",
+    '.aita': "Write a reddit AITA post about",
+}
 
-def generate_greentext(prompt: str) -> str:
+
+def generate_text(prompt: str) -> str:
     response = openai.Completion.create(
         model="text-davinci-002",
         prompt=prompt,
@@ -26,13 +31,17 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('.greentext '):
-        subject = '"' + message.content[11:] + '"'
-        await message.reply(f"```\n{generate_greentext(f'Write a 4chan greentext about {subject}')}\n```")
+    if message.content == ".help":
+        out = "```\n"
+        for k, v in generation_commands.items():
+            out += f"{k} - {v}\n"
+        out += "```"
+        await message.reply(out)
 
-    if message.content.startswith('.aita '):
-        subject = '"' + message.content[6:] + '"'
-        await message.reply(f"```\n{generate_greentext(f'Write a reddit AITA post about {subject}')}\n```")
+    for k, v in generation_commands.items():
+        if message.content.startswith(k):
+            subject = f'"{message.content[len(k)+1:]}"'
+            await message.reply(f"```\n{generate_text(f'{v} {subject}')}\n```")
 
 
 @client.event
