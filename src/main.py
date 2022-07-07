@@ -11,7 +11,7 @@ client = discord.Client()
 def generate_greentext(prompt: str) -> str:
     response = openai.Completion.create(
         model="text-davinci-002",
-        prompt=f"4chan greentext about \"{prompt}\"",
+        prompt=prompt,
         temperature=0,
         max_tokens=150,
         top_p=1.0,
@@ -27,7 +27,12 @@ async def on_message(message):
         return
 
     if message.content.startswith('.greentext '):
-        await message.reply(f"```\n{generate_greentext(message.content[11:])}\n```")
+        subject = '"' + message.content[11:] + '"'
+        await message.reply(f"```\n{generate_greentext(f'Write a 4chan greentext about {subject}')}\n```")
+
+    if message.content.startswith('.aita '):
+        subject = '"' + message.content[6:] + '"'
+        await message.reply(f"```\n{generate_greentext(f'Write a reddit AITA post about {subject}')}\n```")
 
 
 @client.event
